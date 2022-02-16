@@ -6,9 +6,9 @@ The application uses Tailwind CSS plus daisyUI for styling and utilizes Axios to
 
 ### Technology
 
-React
-Tailwind
-Axios
+- React
+- Tailwind
+- Axios
 
 ### Requirements
 
