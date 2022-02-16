@@ -4,17 +4,23 @@ import { useParams, Link } from 'react-router-dom'
 import Spinner from '../components/layout/Spinner'
 import RepoList from '../components/repos/RepoList'
 import GitHubContext from '../context/github/GithubContext'
+import { getUserAndRepos } from '../context/github/GitHubActions'
 
 const User = () => {
-  const { getUser, user, loading, getUserRepos, repos } =
-    useContext(GitHubContext)
+  const { user, isLoading, repos, dispatch } = useContext(GitHubContext)
 
   const params = useParams()
 
   useEffect(() => {
-    getUser(params.login)
-    getUserRepos(params.login)
-  }, [])
+    dispatch({ type: 'SET_LOADING' })
+
+    const getUserData = async () => {
+      const userData = await getUserAndRepos(params.login)
+      dispatch({ type: 'GET_USER_AND_REPOS', payload: userData })
+    }
+
+    getUserData()
+  }, [dispatch, params.login])
 
   const {
     name,
@@ -33,7 +39,7 @@ const User = () => {
     hireable,
   } = user
 
-  if (loading) {
+  if (isLoading) {
     return <Spinner />
   }
 
